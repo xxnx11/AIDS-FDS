@@ -1,16 +1,21 @@
-import numpy
-# initializing matrices
-x = numpy.array([[1, 2], [4, 5]])
-y = numpy.array([[7, 8], [9, 10]])
-# using add() to add matrices
-print("The element wise addition of matrix is : ")
-print(numpy.add(x, y))
-# using subtract() to subtract matrices
-print("The element wise subtraction of matrix is : ")
-print(numpy.subtract(x, y))
-# using dot() to multiply matrices
-print ("The product of matrices is : ")
-print (numpy.dot(x,y))
-# using "T" to transpose the matrix
-print("The transpose of given matrix is : ")
-print(x.T)
+import numpy as np  # It's common practice to import numpy as np
+
+# Initializing matrices
+x = np.array([[1, 2], [4, 5]])
+y = np.array([[7, 8], [9, 10]])
+
+# Using add() to add matrices
+print("The element-wise addition of matrices is: ")
+print(np.add(x, y))  # Element-wise addition
+
+# Using subtract() to subtract matrices
+print("The element-wise subtraction of matrices is: ")
+print(np.subtract(x, y))  # Element-wise subtraction
+
+# Using dot() to multiply matrices (matrix multiplication, not element-wise)
+print("The matrix multiplication (dot product) of matrices is: ")
+print(np.dot(x, y))  # Matrix multiplication (dot product)
+
+# Using .T to transpose the matrix
+print("The transpose of the matrix x is: ")
+print(x.T)  # Transpose of matrix x
