@@ -1,115 +1,103 @@
 # Function for average score of the class
 def average(listofmarks):
-sum=0
-count=0
-for i in range(len(listofmarks)):
-if listofmarks[i]!=-999:
-sum+=listofmarks[i]
-count+=1
-avg=sum/count
-print("Total Marks : ", sum)
-print("Average Marks : {:.2f}".format(avg))
-#<----------------------------------------------------------------------------------------------------->
+    total = 0
+    count = 0
+    for mark in listofmarks:
+        if mark != -999:  # Exclude absent students
+            total += mark
+            count += 1
+    if count > 0:
+        avg = total / count
+        print("Total Marks : ", total)
+        print("Average Marks : {:.2f}".format(avg))
+    else:
+        print("No valid marks to calculate average.")
+
 # Function for Highest score in the test for the class
 def Maximum(listofmarks):
-for i in range(len(listofmarks)):
-if listofmarks[i]!=-999:
-Max=listofmarks[0]
-break
-for i in range(1,len(listofmarks)):
-if listofmarks[i]>Max:
-Max=listofmarks[i]
-return(Max)
-#<------------------------------------------------------------------------------------------------------>
+    Max = -999  # Initialize to a value smaller than any valid mark
+    for mark in listofmarks:
+        if mark != -999:  # Exclude absent students
+            if mark > Max:
+                Max = mark
+    return Max
+
 # Function for Lowest score in the test for the class
 def Minimum(listofmarks):
-for i in range(len(listofmarks)):
-if listofmarks[i]!=-999:
-Min=listofmarks[0]
-break
-for i in range(1,len(listofmarks)):
-if listofmarks[i]<Min:
-Min=listofmarks[i]
-return(Min)
-#<------------------------------------------------------------------------------------------------------->
+    Min = 999  # Initialize to a value larger than any valid mark
+    for mark in listofmarks:
+        if mark != -999:  # Exclude absent students
+            if mark < Min:
+                Min = mark
+    return Min
+
 # Function for counting the number of students absent for the test
 def absentcount(listofmarks):
-count=0
-for i in range(len(listofmarks)):
-if listofmarks[i]==-999:
-count+=1
-return(count)
-#<------------------------------------------------------------------------------------------------------->
+    count = 0
+    for mark in listofmarks:
+        if mark == -999:  # Marked as absent
+            count += 1
+    return count
+
 # Function for displaying marks with highest frequency
 def maxFrequency(listofmarks):
-i=0
-Max=0
-print("Marks | Frequency")
-for j in listofmarks:
-if (listofmarks.index(j)==i):
-print(j," | ",listofmarks.count(j))
-if listofmarks.count(j)>Max:
-Max=listofmarks.count(j)
-mark=j
-i=i+1
-return(mark,Max)
-#<------------------------------------------------------------------------------------------------------->
+    from collections import Counter
+    count_dict = Counter(listofmarks)
+    # Exclude absent students (-999) from the frequency count
+    del count_dict[-999]
+    if count_dict:
+        max_mark = max(count_dict, key=count_dict.get)
+        max_freq = count_dict[max_mark]
+        print("Marks | Frequency")
+        for mark, freq in count_dict.items():
+            print(f"{mark} | {freq}")
+        return max_mark, max_freq
+    else:
+        print("No valid marks to calculate frequency.")
+        return None, 0
+
 # Main function
-marksinFDS=[]
-numberofstudents=int(input("Enter total number of students : "))
-for i in range(numberofstudents):
-marks=int(input("Enter marks of student "+str(i+1)+" : "))
-marksinFDS.append(marks)
-flag=1
-while flag==1:
-print("\n\n--------------------MENU--------------------\n")
-print("1. Total and Average Marks of the Class")
-print("2. Highest and Lowest Marks in the Class")
-print("3. Number of Students absent for the test")
-print("4. Marks with Highest Frequency")
-print("5. Exit\n")
-ch=int(input("Enter your Choice (from 1 to 5) :"))
-if ch==1:
-average(marksinFDS)
-a = input("Do you want to continue (yes/no) :")
-if a == "yes":
-flag = 1
-else:
-flag = 0
-print("Thanks for using this program!")
-elif ch==2:
-print("Highest Score in Class : ", Maximum(marksinFDS))
-print("Lowest Score in Class : ", Minimum(marksinFDS))
-a = input("Do you want to continue (yes/no) :")
-flag = 1
-else:
-flag = 0
-print("Thanks for using this program!")
-elif ch==3:
-print("Number of Students absent in the test : ", absentcount(marksinFDS))
-a = input("Do you want to continue (yes/no) :")
-if a == "yes":
-flag = 1
-else:
-flag = 0
-print("Thanks for using this program!")
-elif ch==4:
-mark,fr = maxFrequency(marksinFDS)
-print("Highest frequency is of marks {0} that is {1} ".format(mark,fr))
-a = input("Do you want to continue (yes/no) :")
-if a == "yes":
-flag = 1
-else:
-flag = 0
-print("Thanks for using this program!")
-elif ch==5:
-flag=0
-print("Thanks for using this program!")
-else:
-print("!!Wrong Choice!! ")
-a=input("Do you want to continue (yes/no) :")
-if a=="yes":
-flag=1
-else:
-flag=0
-print("Thanks for using this program!")
+def main():
+    marksinFDS = []
+    numberofstudents = int(input("Enter total number of students : "))
+    
+    for i in range(numberofstudents):
+        marks = int(input(f"Enter marks of student {i+1} : "))
+        marksinFDS.append(marks)
+
+    flag = True
+    while flag:
+        print("\n\n--------------------MENU--------------------\n")
+        print("1. Total and Average Marks of the Class")
+        print("2. Highest and Lowest Marks in the Class")
+        print("3. Number of Students absent for the test")
+        print("4. Marks with Highest Frequency")
+        print("5. Exit\n")
+        
+        ch = int(input("Enter your Choice (from 1 to 5) : "))
+        
+        if ch == 1:
+            average(marksinFDS)
+        elif ch == 2:
+            print("Highest Score in Class : ", Maximum(marksinFDS))
+            print("Lowest Score in Class : ", Minimum(marksinFDS))
+        elif ch == 3:
+            print("Number of Students absent in the test : ", absentcount(marksinFDS))
+        elif ch == 4:
+            mark, fr = maxFrequency(marksinFDS)
+            if mark is not None:
+                print(f"Highest frequency is of marks {mark} that is {fr}")
+        elif ch == 5:
+            print("Thanks for using this program!")
+            flag = False
+        else:
+            print("!!Wrong Choice!!")
+        
+        # Ask user if they want to continue
+        a = input("Do you want to continue (yes/no) : ")
+        if a.lower() != "yes":
+            flag = False
+            print("Thanks for using this program!")
+
+if __name__ == "__main__":
+    main()
