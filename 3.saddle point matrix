@@ -1,0 +1,34 @@
+def find_saddle_point(matrix):
+"""Find the saddle point in the matrix if one exists.
+A saddle point is defined as an element that is the smallest in its rowand the largest in its column. """
+if not matrix or not matrix[0]:
+return None # Empty matrix or row
+m = len(matrix)
+n = len(matrix[0])
+for i in range(m):
+# Find the smallest element in row i
+min_row_value = min(matrix[i])
+min_row_index = matrix[i].index(min_row_value)
+# Check if this element is the largest in its column
+is_saddle_point = True
+for k in range(m):
+if matrix[k][min_row_index] > min_row_value:
+is_saddle_point = False
+break
+if is_saddle_point:
+return (i, min_row_index) # Return the row and column indices of the saddle point
+return None # No saddle point found
+def main():
+# Example matrix
+matrix = [
+[3, 8, 7],
+[5, 6, 7],
+[6, 9, 10]
+]
+result = find_saddle_point(matrix)
+if result:
+print(f"Saddle point found at position: {result}")
+else:
+print("No saddle point found")
+if __name__ == "__main__":
+main()
