@@ -1,0 +1,159 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Node structure for singly linked list
+struct Member {
+    string prn;           // Student PRN
+    string name;          // Student Name
+    Member* next;         // Pointer to next member
+
+    // Constructor to initialize the member data
+    Member(string prn_val, string name_val) : prn(prn_val), name(name_val), next(nullptr) {}
+};
+
+// Class to manage the club members
+class PinnacleClub {
+private:
+    Member* president;    // First node (reserved for president)
+    Member* secretary;    // Last node (reserved for secretary)
+    Member* head;         // Head of the list (could be null for empty list)
+
+public:
+    // Constructor to initialize the club (head is null initially)
+    PinnacleClub() : president(nullptr), secretary(nullptr), head(nullptr) {}
+
+    // Function to add a new member to the club
+    void addMember(string prn, string name) {
+        Member* newMember = new Member(prn, name);
+        
+        if (!head) { 
+            head = newMember;
+            president = newMember;  
+            secretary = newMember; 
+        } else {
+            Member* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newMember;
+            secretary = newMember; 
+        }
+    }
+
+    void deleteMember(string prn) {
+        if (!head) {
+            cout << "No members to delete!" << endl;
+            return;
+        }
+
+        if (head->prn == prn) {
+            Member* temp = head;
+            head = head->next; 
+            if (head == nullptr) { 
+                president = nullptr;
+                secretary = nullptr;
+            }
+            delete temp;
+            cout << "Member with PRN " << prn << " deleted." << endl;
+            return;
+        }
+
+        Member* temp = head;
+        while (temp->next && temp->next->prn != prn) {
+            temp = temp->next;
+        }
+
+        if (temp->next) { 
+            Member* toDelete = temp->next;
+            temp->next = temp->next->next;  
+            if (temp->next == nullptr) { 
+                secretary = temp;
+            }
+            delete toDelete;
+            cout << "Member with PRN " << prn << " deleted." << endl;
+        } else {
+            cout << "Member with PRN " << prn << " not found!" << endl;
+        }
+    }
+    int totalMembers() {
+        int count = 0;
+        Member* temp = head;
+        while (temp) {
+            count++;
+            temp = temp->next;
+        }
+        return count;
+    }
+
+    void displayMembers() {
+        if (!head) {
+            cout << "No members in the club." << endl;
+            return;
+        }
+
+        cout << "Club Members:" << endl;
+        Member* temp = head;
+        while (temp) {
+            cout << "PRN: " << temp->prn << ", Name: " << temp->name << endl;
+            temp = temp->next;
+        }
+    }
+
+    void concatenateLists(PinnacleClub& other) {
+        if (!other.head) {
+            cout << "The other division has no members to merge." << endl;
+            return;
+        }
+
+        if (!head) {
+            head = other.head;
+            president = other.president;
+            secretary = other.secretary;
+        } else 
+{
+            Member* temp = head;
+            while (temp->next) 
+{ 
+                temp = temp->next;
+            }
+            temp->next = other.head; 
+            secretary = other.secretary; 
+        }
+
+        other.head = nullptr;
+        other.president = nullptr;
+        other.secretary = nullptr;
+        cout << "Lists merged successfully." << endl;
+    }
+};
+
+int main() 
+{
+    PinnacleClub division1;
+    PinnacleClub division2;
+
+    division1.addMember("1001", "John Doe");
+    division1.addMember("1002", "Jane Smith");
+
+    division2.addMember("2001", "Alice Johnson");
+    division2.addMember("2002", "Bob Brown");
+
+    cout << "Division 1 Members:" << endl;
+    division1.displayMembers();
+    cout << "Division 2 Members:" << endl;
+    division2.displayMembers();
+
+    division1.concatenateLists(division2);
+
+    // Displaying members after concatenation
+    cout << "After merging both divisions:" << endl;
+    division1.displayMembers();
+    division1.deleteMember("1001");
+    cout << "After deleting a member:" << endl;
+    division1.displayMembers();
+
+    cout << "Total number of members: " << division1.totalMembers() << endl;
+
+    return 0;
+}
