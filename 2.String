@@ -1,0 +1,57 @@
+def longest_word(s):
+"""Return the word with the longest length."""
+words = s.split()
+longest = ""
+for word in words:
+if len(word) > len(longest):
+longest = word
+return longest
+def char_frequency(s, char):
+"""Determine the frequency of occurrence of a particular character in the string."""
+count = 0
+for c in s:
+if c == char:
+count += 1
+return count
+def is_palindrome(s):
+"""Check whether the given string is a palindrome or not."""
+cleaned_s = ''.join(e.lower() for e in s if e.isalnum())
+return cleaned_s == cleaned_s[::-1]
+def find_substring_index(s, substring):
+"""Display the index of the first appearance of the substring."""
+index = -1
+for i in range(len(s) - len(substring) + 1):
+if s[i:i+len(substring)] == substring:
+index = i
+break
+return index
+def word_occurrences(s):
+"""Count the occurrences of each word in the given string."""
+words = s.split()
+occurrences = {}
+for word in words:
+if word in occurrences:
+occurrences[word] += 1
+else:
+occurrences[word] = 1
+return occurrences
+def main():
+# Example input
+s = "A man a plan a canal Panama and a man again"
+substring = "plan"
+char = 'a'
+# a) Display word with the longest length
+print(f"Longest word: {longest_word(s)}")
+# b) Determine the frequency of occurrence of a particular character
+print(f"Frequency of character '{char}': {char_frequency(s, char)}")
+# c) Check whether the given string is a palindrome or not
+print(f"Is the string a palindrome? {is_palindrome(s)}")
+# d) Display index of first appearance of the substring
+print(f"Index of first appearance of '{substring}': {find_substring_index(s, substring)}")
+# e) Count the occurrences of each word in the given string
+occurrences = word_occurrences(s)
+print("Word occurrences:")
+for word, count in occurrences.items():
+print(f"{word}: {count}")
+if __name__ == "__main__":
+main()
